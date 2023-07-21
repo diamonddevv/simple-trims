@@ -1,0 +1,37 @@
+{
+	"schemaVersion": 1,
+	"id": "simpletrims",
+	"version": "${version}",
+	"name": "SimpleTrims",
+	"description": "Simplifying the process of adding new trims and materials.",
+	"authors": [
+		"DiamondDev"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "GNU GPLv3",
+	"icon": "assets/simpletrims/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.diamonddev.simpletrims.SimpleTrims"
+		],
+		"preLaunch": [
+			"net.diamonddev.simpletrims.PreLaunch"
+		]
+	},
+	"mixins": [
+		"simpletrims.mixins.json"
+	],
+	"accessWidener": "simpletrims.accesswidener",
+	"depends": {
+		"fabricloader": ">=0.14.21",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+	}
+}
