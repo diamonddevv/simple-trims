@@ -24,3 +24,6 @@ _Here be dragons_
 #### For those who wish to create custom trims using this mod:
 - Once the system is functional, I will be creating a wiki on how to use this system.
 - Vanilla Packs for armor trims _should_ still work. I plan to write this system to work in parallel to the vanilla one.
+
+  # Credits
+  - [Benjamin Norton](https://github.com/Benjamin-Norton) for the original project, All the Trims, of which this is heavily inspired and referenced from.
