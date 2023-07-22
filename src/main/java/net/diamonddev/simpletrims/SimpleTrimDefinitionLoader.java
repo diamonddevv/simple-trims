@@ -3,17 +3,17 @@ package net.diamonddev.simpletrims;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.client.texture.atlas.PalettedPermutationsAtlasSource;
+import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.item.trim.ArmorTrimMaterials;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.*;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HexFormat;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import static net.diamonddev.simpletrims.SimpleTrimDefinitionLoader.MaterialKeys.*;
@@ -76,6 +77,9 @@ public class SimpleTrimDefinitionLoader implements SimpleSynchronousResourceRelo
             }
             return ingredient;
         }
+        public String getIngredientAsId() {
+            return bean.ingredient;
+        }
         public String getAssetName() {
             if (bean.assetName != null) {
                 return bean.assetName;
@@ -87,11 +91,14 @@ public class SimpleTrimDefinitionLoader implements SimpleSynchronousResourceRelo
         public int getDescColorCodeFromHex() {
             return HexFormat.fromHexDigits(bean.desciption.matColorHexcode, 1, bean.desciption.matColorHexcode.length()); // exclude the hash
         }
+        public String getDescColorCodeAsHexString() {
+            return bean.desciption.matColorHexcode;
+        }
         public String getNamespace() {
             return filepath.getNamespace();
         }
         public Identifier getPathToPalette() {
-            return new Identifier(filepath.getNamespace(), "textures/trims/color_palettes/" + getAssetName() + ".png");
+            return new Identifier(filepath.getNamespace(), "trims/color_palettes/" + getAssetName());
         }
     }
 
@@ -117,7 +124,6 @@ public class SimpleTrimDefinitionLoader implements SimpleSynchronousResourceRelo
                     InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8); // open stream, utf8
                     MaterialBeanWrapper beanWrapper = new MaterialBeanWrapper(gson.fromJson(reader, MaterialBean.class), id);
                     SIMPLE_TRIM_MATERIALS.add(beanWrapper);
-                    registerMaterial(beanWrapper);
                 } catch (Exception e) {
                     SimpleTrims.LOGGER.error("Error occurred reading trim at id [{}] - {}", id.toString(), e);
                 }
@@ -125,20 +131,12 @@ public class SimpleTrimDefinitionLoader implements SimpleSynchronousResourceRelo
         }
     }
 
-    private static RegistryKey<ArmorTrimMaterial> of(Identifier id) {
-        return RegistryKey.of(RegistryKeys.TRIM_MATERIAL, id);
+
+    public static void loopSimpleMaterials(Consumer<MaterialBeanWrapper> consumer) {
+        for (MaterialBeanWrapper bean : SimpleTrimDefinitionLoader.SIMPLE_TRIM_MATERIALS) consumer.accept(bean);
     }
 
-    private static void registerMaterial(MaterialBeanWrapper wrapper) {
-
-        RegistryKey<ArmorTrimMaterial> mat = of(new Identifier(wrapper.getNamespace(), wrapper.getAssetName()));
-
-        ArmorTrimMaterials.register(null, mat,
-                wrapper.getIngredientAsItem(), Style.EMPTY.withColor(wrapper.getDescColorCodeFromHex()), 0f);
-    }
-
-
-    public static void loopTrimMaterials(Consumer<Item> consumer) {
+    public static void forEachMaterialIngredient(Consumer<Item> consumer) {
         for (MaterialBeanWrapper bean : SimpleTrimDefinitionLoader.SIMPLE_TRIM_MATERIALS) {
             consumer.accept(bean.getIngredientAsItem());
         }
@@ -147,5 +145,14 @@ public class SimpleTrimDefinitionLoader implements SimpleSynchronousResourceRelo
     public static String isolateFileName(Identifier resId) {
         String[] split = resId.getPath().split("/");
         return split[split.length-1].split("\\.")[0]; // isolates the filename ("namespace:path/to/file.json" -> "file")
+    }
+
+    public static Optional<Identifier> getTrimMatId(ItemStack stack) {
+        if (stack.isIn(ItemTags.TRIMMABLE_ARMOR)) {
+            NbtCompound nbtCompound = stack.getOrCreateSubNbt("Trim");
+            if (nbtCompound.contains("material")) {
+                return Optional.of(new Identifier(nbtCompound.getString("material")));
+            }
+        } return Optional.empty();
     }
 }

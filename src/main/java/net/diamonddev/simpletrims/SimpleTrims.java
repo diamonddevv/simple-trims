@@ -1,7 +1,6 @@
 package net.diamonddev.simpletrims;
 
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;

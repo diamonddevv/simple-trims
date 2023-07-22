@@ -2,7 +2,6 @@ package net.diamonddev.simpletrims.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.diamonddev.simpletrims.SimpleTrimDefinitionLoader;
-import net.fabricmc.fabric.mixin.resource.loader.ResourcePackManagerMixin;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -34,7 +33,7 @@ public abstract class DataPackContentsMixin { // this mixin was heavily taken fr
         if (entries.containsKey(ItemTags.TRIM_MATERIALS)) {
             ArrayList<RegistryEntry<T>> list = new ArrayList<>();
 
-            SimpleTrimDefinitionLoader.loopTrimMaterials(i -> {
+            SimpleTrimDefinitionLoader.forEachMaterialIngredient(i -> {
                 list.add(mapToEntry(i));
             });
 
