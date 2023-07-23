@@ -1,5 +1,6 @@
 package net.diamonddev.simpletrims;
 
+import net.diamonddev.simpletrims.data.SimpleTrimDataLoader;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
@@ -12,7 +13,7 @@ public class SimpleTrims implements ModInitializer {
 	public static final String MODID = "simpletrims";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 
-	private static final SimpleTrimDefinitionLoader TRIM_MAT_DEF_LOADER = new SimpleTrimDefinitionLoader();
+	private static final SimpleTrimDataLoader TRIM_MAT_DEF_LOADER = new SimpleTrimDataLoader();
 
 
 	@Override

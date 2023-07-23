@@ -1,7 +1,7 @@
 package net.diamonddev.simpletrims.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.diamonddev.simpletrims.SimpleTrimDefinitionLoader;
+import net.diamonddev.simpletrims.data.SimpleTrimDataLoader;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -23,6 +23,7 @@ public abstract class DataPackContentsMixin { // this mixin was heavily taken fr
     private static <T> Object simpletrims$addAllArmorToTagAndAllMaterialsToTag(Object obj) {
         HashMap<TagKey<T>, List<RegistryEntry<T>>> entries = new HashMap<>((Map<TagKey<T>, List<RegistryEntry<T>>>) obj);
 
+
         if (entries.containsKey(ItemTags.TRIMMABLE_ARMOR)) {
             ArrayList<RegistryEntry<T>> list = new ArrayList<>();
             List<Item> items = Registries.ITEM.stream().filter(i -> i instanceof Equipment e && e.getSlotType().isArmorSlot()).toList();
@@ -33,15 +34,11 @@ public abstract class DataPackContentsMixin { // this mixin was heavily taken fr
         if (entries.containsKey(ItemTags.TRIM_MATERIALS)) {
             ArrayList<RegistryEntry<T>> list = new ArrayList<>();
 
-            SimpleTrimDefinitionLoader.forEachMaterialIngredient(i -> {
-                list.add(mapToEntry(i));
-            });
-
+            for (var material : SimpleTrimDataLoader.SIMPLE_TRIM_MATERIALS) list.add(mapToEntry(material.getIngredientAsItem()));
             list.addAll(entries.get(ItemTags.TRIM_MATERIALS));
 
             entries.put((TagKey<T>) ItemTags.TRIM_MATERIALS, list);
         }
-
         return Collections.unmodifiableMap(entries);
     }
 

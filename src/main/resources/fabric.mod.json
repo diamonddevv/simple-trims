@@ -18,6 +18,9 @@
 		"main": [
 			"net.diamonddev.simpletrims.SimpleTrims"
 		],
+		"client": [
+			"net.diamonddev.simpletrims.SimpleTrimsClient"
+		],
 		"preLaunch": [
 			"net.diamonddev.simpletrims.PreLaunch"
 		]

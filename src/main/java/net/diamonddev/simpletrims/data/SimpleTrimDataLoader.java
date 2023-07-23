@@ -1,19 +1,15 @@
-package net.diamonddev.simpletrims;
+package net.diamonddev.simpletrims.data;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import net.diamonddev.simpletrims.SimpleTrims;
+import net.diamonddev.simpletrims.network.SendEncodedPalette;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
+import net.minecraft.client.texture.NativeImage;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.trim.ArmorTrimMaterial;
-import net.minecraft.item.trim.ArmorTrimMaterials;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.*;
-import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,19 +18,23 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HexFormat;
-import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 
-import static net.diamonddev.simpletrims.SimpleTrimDefinitionLoader.MaterialKeys.*;
+import static net.diamonddev.simpletrims.data.SimpleTrimDataLoader.MaterialKeys.*;
 
-public class SimpleTrimDefinitionLoader implements SimpleSynchronousResourceReloadListener {
+public class SimpleTrimDataLoader implements SimpleSynchronousResourceReloadListener {
 
+    public static final String ENCODED_PALETTE_CONTAIN_STRING = "simpletrims_encoded_palette";
+
+    private static final int MATERIAL_PALETTE_WIDTH = 8; // palettes are 8px wide
+
+    private static final String MATERIAL_PALETTE_FILEPATH = "encodable_palettes";
     private static final String MATERIAL_FILEPATH = "simple_trim_material";
     private static final String PATTERN_FILEPATH = "simple_trim_patten";
 
     static class MaterialKeys {
         static final String
+                KEY_ENCODED_PALETTE = "encoded_palette",
                 KEY_ASSET_NAME = "asset_name",
                 KEY_DESC = "description",
                 KEY_DESC_COLOR = "color",
@@ -50,6 +50,9 @@ public class SimpleTrimDefinitionLoader implements SimpleSynchronousResourceRelo
             @SerializedName(KEY_DESC_TRANSLATIONKEY)
             public String matNametranslationKey;
         }
+
+        @SerializedName(KEY_ENCODED_PALETTE)
+        public boolean encodedPalette = false;
 
         @SerializedName(KEY_ASSET_NAME)
         public String assetName = null;
@@ -98,15 +101,18 @@ public class SimpleTrimDefinitionLoader implements SimpleSynchronousResourceRelo
             return filepath.getNamespace();
         }
         public Identifier getPathToPalette() {
-            return new Identifier(filepath.getNamespace(), "trims/color_palettes/" + getAssetName());
+            if (bean.encodedPalette) {
+                return new Identifier(filepath.getNamespace(), ENCODED_PALETTE_CONTAIN_STRING + "/" + getNamespace() + "/" + getAssetName());
+            } else return new Identifier(filepath.getNamespace(), "trims/color_palettes/" + getAssetName());
         }
     }
 
     public static ArrayList<MaterialBeanWrapper> SIMPLE_TRIM_MATERIALS = new ArrayList<>();
+    public static ArrayList<PaletteEncoderDecoder.EncodedPalette> ENCODED_PALETTES = new ArrayList<>();
 
     @Override
     public Identifier getFabricId() {
-        return SimpleTrims.id("trim_material");
+        return SimpleTrims.id("data");
     }
 
     @Override
@@ -115,8 +121,11 @@ public class SimpleTrimDefinitionLoader implements SimpleSynchronousResourceRelo
 
         // Clear Cache
         SIMPLE_TRIM_MATERIALS.clear();
+        ENCODED_PALETTES.clear();
 
-        // Get Stream and consume beans
+        // Get Streams and consume beans
+
+        // Materials
         for (Identifier id : manager.findResources(MATERIAL_FILEPATH, (id) -> id.getPath().endsWith(".json")).keySet()) {
             if (manager.getResource(id).isPresent()) {
                 try (InputStream stream = manager.getResource(id).get().getInputStream()) {
@@ -129,16 +138,19 @@ public class SimpleTrimDefinitionLoader implements SimpleSynchronousResourceRelo
                 }
             }
         }
-    }
 
+        // Encoded Palettes
+        for (Identifier id : manager.findResources(MATERIAL_PALETTE_FILEPATH, (id) -> id.getPath().endsWith(".png")).keySet()) {
+            if (manager.getResource(id).isPresent()) {
+                try (InputStream stream = manager.getResource(id).get().getInputStream()) {
 
-    public static void loopSimpleMaterials(Consumer<MaterialBeanWrapper> consumer) {
-        for (MaterialBeanWrapper bean : SimpleTrimDefinitionLoader.SIMPLE_TRIM_MATERIALS) consumer.accept(bean);
-    }
+                    NativeImage img = NativeImage.read(stream); // open img
+                    ENCODED_PALETTES.add(PaletteEncoderDecoder.encode(id, img, MATERIAL_PALETTE_WIDTH));
 
-    public static void forEachMaterialIngredient(Consumer<Item> consumer) {
-        for (MaterialBeanWrapper bean : SimpleTrimDefinitionLoader.SIMPLE_TRIM_MATERIALS) {
-            consumer.accept(bean.getIngredientAsItem());
+                } catch (Exception e) {
+                    SimpleTrims.LOGGER.error("Error occurred reading palette image at id [{}] - {}", id.toString(), e);
+                }
+            }
         }
     }
 
@@ -147,12 +159,7 @@ public class SimpleTrimDefinitionLoader implements SimpleSynchronousResourceRelo
         return split[split.length-1].split("\\.")[0]; // isolates the filename ("namespace:path/to/file.json" -> "file")
     }
 
-    public static Optional<Identifier> getTrimMatId(ItemStack stack) {
-        if (stack.isIn(ItemTags.TRIMMABLE_ARMOR)) {
-            NbtCompound nbtCompound = stack.getOrCreateSubNbt("Trim");
-            if (nbtCompound.contains("material")) {
-                return Optional.of(new Identifier(nbtCompound.getString("material")));
-            }
-        } return Optional.empty();
+    public static Identifier convertEncodedPaletteLocToPalettedPermutationIdenfier(Identifier loc) {
+        return new Identifier(loc.getNamespace(), ENCODED_PALETTE_CONTAIN_STRING + "/" + loc.getNamespace() + "/" + isolateFileName(loc));
     }
 }

@@ -2,11 +2,10 @@ package net.diamonddev.simpletrims.mixin;
 
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.diamonddev.simpletrims.SimpleTrimDefinitionLoader;
+import net.diamonddev.simpletrims.data.SimpleTrimDataLoader;
 import net.diamonddev.simpletrims.SimpleTrims;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.RegistryLoader;
-import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.util.Identifier;
@@ -40,9 +39,7 @@ public class RegistryLoaderMixin {
 
         ResourcePack pack = first.getValue().getPack();
 
-        boolean modified = false;
-
-        for (var bean : SimpleTrimDefinitionLoader.SIMPLE_TRIM_MATERIALS) {
+        for (var bean : SimpleTrimDataLoader.SIMPLE_TRIM_MATERIALS) {
             JsonObject resource = new JsonObject();
             JsonObject desc = new JsonObject();
 
@@ -58,15 +55,9 @@ public class RegistryLoaderMixin {
                 Identifier id = new Identifier(bean.getNamespace(), "trim_material/" + bean.getAssetName() + ".json");
                 og.put(id, res);
                 SimpleTrims.LOGGER.info("Dynamically generated Trim Material Definition for assetname '{}'", bean.getAssetName());
-                modified = true;
             } catch (RuntimeException runtime) {
                 SimpleTrims.LOGGER.error("Failed to dynamically generate Trim Material Definition for assetname '" +  bean.getAssetName() + "'", runtime);
             }
-        }
-
-        if (modified) {
-            SimpleTrims.LOGGER.info("One or more Simple Trim Material(s) was dynamically generated, so resources must be reloaded.");
-            MinecraftClient.getInstance().reloadResources();
         }
 
         return og;

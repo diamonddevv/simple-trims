@@ -1,4 +1,6 @@
 {
+  "encoded_palette": true,
+
   "description": {
     "color": "#633200",
     "translate": "trim_material.test.dirt"

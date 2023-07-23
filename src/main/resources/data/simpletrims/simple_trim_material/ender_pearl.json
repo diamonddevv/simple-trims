@@ -1,0 +1,9 @@
+{
+  "encoded_palette": true,
+
+  "description": {
+    "color": "#349988",
+    "translate": "trim_material.test.ender"
+  },
+  "ingredient": "minecraft:ender_pearl"
+}
