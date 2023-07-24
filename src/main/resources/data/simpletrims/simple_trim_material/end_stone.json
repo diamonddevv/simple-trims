@@ -1,9 +1,0 @@
-{
-  "encoded_palette": true,
-
-  "description": {
-    "color": "#D5DA94",
-    "translate": "trim_material.test.endstone"
-  },
-  "ingredient": "minecraft:end_stone"
-}

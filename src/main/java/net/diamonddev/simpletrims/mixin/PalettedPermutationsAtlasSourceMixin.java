@@ -52,7 +52,8 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
                 SimpleTrims.LOGGER.info("Successfully tricked PalettedPermutations into loading an EncodedPalette! '{}'", identifier);
                 cir.setReturnValue(colors);
             } catch (Exception e) {
-                throw new RuntimeException("Failed to trick PalettedPermutations into loading an EncodedPalette", e);
+                SimpleTrims.LOGGER.error("Failed to trick PalettedPermutations into loading an EncodedPalette. This will cause all SimpleTrims Materials to stop working. Please fix it! Problematic Palette ID: " + identifier, e);
+                cir.cancel();
             }
         }
     }

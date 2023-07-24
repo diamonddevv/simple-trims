@@ -3,7 +3,12 @@
 
   "description": {
     "color": "#349988",
-    "translate": "trim_material.test.ender"
+    "translations" : [
+      {
+        "lang": "en_us",
+        "string": "Ender Pearl Material"
+      }
+    ]
   },
   "ingredient": "minecraft:ender_pearl"
 }

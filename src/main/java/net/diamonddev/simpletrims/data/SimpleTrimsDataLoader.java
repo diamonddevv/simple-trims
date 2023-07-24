@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Language;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
@@ -127,7 +128,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
         }
 
         public String getTranslation(String langcode) {
-            return getTranslationHashmap().containsKey(langcode) ? getTranslationHashmap().get(langcode) : getReferrableTranslationKey();
+            return getTranslationHashmap().containsKey(langcode) ? getTranslationHashmap().get(langcode) : getTranslationHashmap().containsKey(Language.DEFAULT_LANGUAGE) ? getTranslationHashmap().get(Language.DEFAULT_LANGUAGE) : getReferrableTranslationKey();
         }
 
         public String getNamespace() {
