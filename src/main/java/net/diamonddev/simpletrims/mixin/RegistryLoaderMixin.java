@@ -2,11 +2,12 @@ package net.diamonddev.simpletrims.mixin;
 
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.diamonddev.simpletrims.data.SimpleTrimDataLoader;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.diamonddev.simpletrims.SimpleTrims;
-import net.minecraft.client.MinecraftClient;
+import net.diamonddev.simpletrims.data.SimpleTrimsDataLoader;
 import net.minecraft.registry.RegistryLoader;
 import net.minecraft.resource.Resource;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.util.Identifier;
 import org.apache.commons.io.IOUtils;
@@ -26,27 +27,30 @@ public class RegistryLoaderMixin {
                     target = "Lnet/minecraft/resource/ResourceFinder;findResources(Lnet/minecraft/resource/ResourceManager;)Ljava/util/Map;"
             )
     )
-    private static Map<Identifier, Resource> simpletrims$ctrlCctrlVAllTheTrimsAndCopyAllSimpleTrimMatsToResourceLoader(Map<Identifier, Resource> og) {
+    private static Map<Identifier, Resource> simpletrims$ctrlCctrlVAllTheTrimsAndCopyAllSimpleTrimMatsToResourceLoader(Map<Identifier, Resource> og, @Local ResourceManager resourceManager) {
 
         Iterator<Map.Entry<Identifier, Resource>> iterator = og.entrySet().iterator();
         if (!iterator.hasNext()) return og;
 
-        Map.Entry<Identifier, Resource> first = og.entrySet().iterator().next();
+        Map.Entry<Identifier, Resource> first = iterator.next();
         if (!first.getKey().getPath().contains("trim_material")) return og;
 
         // ^^ All the trims has these lines. they're important.
 
-
         ResourcePack pack = first.getValue().getPack();
 
-        for (var bean : SimpleTrimDataLoader.SIMPLE_TRIM_MATERIALS) {
+        if (SimpleTrimsDataLoader.SIMPLE_TRIM_MATERIALS.isEmpty()) {
+            SimpleTrims.TRIM_DATA.reload(resourceManager);
+        }
+
+        for (var bean : SimpleTrimsDataLoader.SIMPLE_TRIM_MATERIALS) {
             JsonObject resource = new JsonObject();
             JsonObject desc = new JsonObject();
 
             try {
                 resource.addProperty("asset_name", bean.getAssetName());
                 desc.addProperty("color", bean.getDescColorCodeAsHexString());
-                desc.addProperty("translate", bean.getDescTranslationKey());
+                desc.addProperty("translate", bean.getDescTranslationKey().equals(SimpleTrimsDataLoader.NOT_A_TRANSLATION_KEY_LOL) ? bean.getReferrableTranslationKey() : bean.getDescTranslationKey());
                 resource.add("description", desc);
                 resource.addProperty("ingredient", bean.getIngredientAsId());
                 resource.addProperty("item_model_index", 0f);

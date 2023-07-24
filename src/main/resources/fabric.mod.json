@@ -5,11 +5,12 @@
 	"name": "SimpleTrims",
 	"description": "Simplifying the process of adding new trims and materials.",
 	"authors": [
-		"DiamondDev"
+		"DiamondDev",
+		"Bawnorton (Author of AllTheTrims, of which some code was reused from)"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://diamonddevv.github.io/",
+		"sources": "https://github.com/diamonddevv/simple-trims"
 	},
 	"license": "GNU GPLv3",
 	"icon": "assets/simpletrims/icon.png",

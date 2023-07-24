@@ -1,7 +1,7 @@
 package net.diamonddev.simpletrims;
 
 import net.diamonddev.simpletrims.data.PaletteEncoderDecoder;
-import net.diamonddev.simpletrims.network.SendEncodedPalette;
+import net.diamonddev.simpletrims.network.SendEncodedPalettes;
 import net.diamonddev.simpletrims.network.SendQuietReload;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -18,7 +18,7 @@ public class SimpleTrimsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        SendEncodedPalette.registerReceiver();
+        SendEncodedPalettes.registerReceiver();
         SendQuietReload.registerReceiver();
     }
 }

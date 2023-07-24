@@ -3,7 +3,12 @@
 
   "description": {
     "color": "#633200",
-    "translate": "trim_material.test.dirt"
+    "translations" : [
+      {
+        "lang": "en_us",
+        "string": "Dirt Material"
+      }
+    ]
   },
   "ingredient": "minecraft:dirt"
 }

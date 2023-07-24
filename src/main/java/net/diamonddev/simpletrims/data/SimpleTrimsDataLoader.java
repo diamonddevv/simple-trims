@@ -3,10 +3,7 @@ package net.diamonddev.simpletrims.data;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import net.diamonddev.simpletrims.SimpleTrims;
-import net.diamonddev.simpletrims.network.SendEncodedPalette;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.client.texture.NativeImage;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.ResourceManager;
@@ -17,16 +14,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HexFormat;
-import java.util.function.Consumer;
+import java.util.HashMap;
 
-import static net.diamonddev.simpletrims.data.SimpleTrimDataLoader.MaterialKeys.*;
+import static net.diamonddev.simpletrims.data.SimpleTrimsDataLoader.MaterialKeys.*;
 
-public class SimpleTrimDataLoader implements SimpleSynchronousResourceReloadListener {
+public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadListener {
 
     public static final String ENCODED_PALETTE_CONTAIN_STRING = "simpletrims_encoded_palette";
-
-    private static final int MATERIAL_PALETTE_WIDTH = 8; // palettes are 8px wide
+    public static final String NOT_A_TRANSLATION_KEY_LOL = "yeahBroThisIsntATranslationKey";
+    public static final String REFERABLE_KEY_REGEX_PATTERN = "^[A-Za-z0-9]+\\.[A-Za-z0-9]+\\.simpletrims\\.referable\\.material$";
 
     private static final String MATERIAL_PALETTE_FILEPATH = "encodable_palettes";
     private static final String MATERIAL_FILEPATH = "simple_trim_material";
@@ -39,16 +35,30 @@ public class SimpleTrimDataLoader implements SimpleSynchronousResourceReloadList
                 KEY_DESC = "description",
                 KEY_DESC_COLOR = "color",
                 KEY_DESC_TRANSLATIONKEY = "translate",
+                KEY_TRANSLATIONS = "translations",
+                KEY_TRANSLATIONS_LANG = "lang",
+                KEY_TRANSLATIONS_STRING = "string",
                 KEY_INGREDIENT = "ingredient";
     }
 
     public static class MaterialBean {
+        public static class LangBean {
+            @SerializedName(KEY_TRANSLATIONS_LANG)
+            public String langCode;
+
+            @SerializedName(KEY_TRANSLATIONS_STRING)
+            public String translation;
+        }
+
         public static class DesciptionBean {
             @SerializedName(KEY_DESC_COLOR)
             public String matColorHexcode;
 
             @SerializedName(KEY_DESC_TRANSLATIONKEY)
-            public String matNametranslationKey;
+            public String matNameTranslationKey = NOT_A_TRANSLATION_KEY_LOL;
+
+            @SerializedName(KEY_TRANSLATIONS)
+            public ArrayList<LangBean> translations;
         }
 
         @SerializedName(KEY_ENCODED_PALETTE)
@@ -58,7 +68,7 @@ public class SimpleTrimDataLoader implements SimpleSynchronousResourceReloadList
         public String assetName = null;
 
         @SerializedName(KEY_DESC)
-        public DesciptionBean desciption;
+        public DesciptionBean desc;
 
         @SerializedName(KEY_INGREDIENT)
         public String ingredient;
@@ -80,23 +90,46 @@ public class SimpleTrimDataLoader implements SimpleSynchronousResourceReloadList
             }
             return ingredient;
         }
+
         public String getIngredientAsId() {
             return bean.ingredient;
         }
+
+
         public String getAssetName() {
             if (bean.assetName != null) {
                 return bean.assetName;
             } else return isolateFileName(filepath);
         }
+
+
         public String getDescTranslationKey() {
-            return bean.desciption.matNametranslationKey;
+            return bean.desc.matNameTranslationKey;
         }
-        public int getDescColorCodeFromHex() {
-            return HexFormat.fromHexDigits(bean.desciption.matColorHexcode, 1, bean.desciption.matColorHexcode.length()); // exclude the hash
+
+        public String getReferrableTranslationKey() {
+            return String.format("%s.%s.simpletrims.referable.material", getNamespace(), getAssetName());
         }
         public String getDescColorCodeAsHexString() {
-            return bean.desciption.matColorHexcode;
+            return bean.desc.matColorHexcode;
         }
+
+
+        @Nullable private HashMap<String, String> translationHash = null;
+        public HashMap<String, String> getTranslationHashmap() {
+            if (translationHash == null) {
+                translationHash = new HashMap<>();
+                bean.desc.translations.forEach(langbean -> {
+                    translationHash.put(langbean.langCode, langbean.translation);
+                });
+            }
+            return translationHash;
+        }
+
+        public String getTranslation(String langcode) {
+            return getTranslationHashmap().containsKey(langcode) ? getTranslationHashmap().get(langcode) : getReferrableTranslationKey();
+        }
+
         public String getNamespace() {
             return filepath.getNamespace();
         }
@@ -144,8 +177,7 @@ public class SimpleTrimDataLoader implements SimpleSynchronousResourceReloadList
             if (manager.getResource(id).isPresent()) {
                 try (InputStream stream = manager.getResource(id).get().getInputStream()) {
 
-                    NativeImage img = NativeImage.read(stream); // open img
-                    ENCODED_PALETTES.add(PaletteEncoderDecoder.encode(id, img, MATERIAL_PALETTE_WIDTH));
+                    ENCODED_PALETTES.add(PaletteEncoderDecoder.encode(id, stream));
 
                 } catch (Exception e) {
                     SimpleTrims.LOGGER.error("Error occurred reading palette image at id [{}] - {}", id.toString(), e);

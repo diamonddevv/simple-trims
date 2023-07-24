@@ -1,11 +1,13 @@
 package net.diamonddev.simpletrims.mixin;
 
-import net.diamonddev.simpletrims.data.SimpleTrimDataLoader;
-import net.diamonddev.simpletrims.network.SendEncodedPalette;
+import net.diamonddev.simpletrims.data.PaletteEncoderDecoder;
+import net.diamonddev.simpletrims.data.SimpleTrimsDataLoader;
+import net.diamonddev.simpletrims.network.SendEncodedPalettes;
 import net.diamonddev.simpletrims.network.SendQuietReload;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,9 +24,10 @@ public class PlayerManagerMixin {
 
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
     private void simpletrims$onPlayerConnectToServer(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
-        SimpleTrimDataLoader.ENCODED_PALETTES.forEach(
-                palette -> ServerPlayNetworking.send(player, SendEncodedPalette.SEND_ENCODED_PALETTE, SendEncodedPalette.write(palette)));
-
+        PacketByteBuf[] bufs = SendEncodedPalettes.write(SimpleTrimsDataLoader.ENCODED_PALETTES.toArray(new PaletteEncoderDecoder.EncodedPalette[0]));
+        for (var buf : bufs) {
+            ServerPlayNetworking.send(player, SendEncodedPalettes.SEND_ENCODED_PALETTES, buf);
+        }
 
         ServerPlayNetworking.send(player, SendQuietReload.SEND_QUIET_RELOAD, PacketByteBufs.create());
     }
