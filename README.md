@@ -10,6 +10,31 @@ This project was orignally a fork of All the Trims, until I realized I did not n
 what I _did_ need I was better off writing myself. All the Trims was heavily used as a reference for some features, however. Some code
 may appear very similar, as the base concept of what All the Trims does is similar to what Simple Trims does for material types.
 
+---
+
+## Include in Project
+_To embed SimpleTrims in your mod (JiJ'd):_
+
+### In `build.gradle`
+#### top `repositories` block
+```
+repositories {
+  maven { url "https://jitpack.io"  } // Fetch from jitpack
+}
+```
+#### `dependencies` block
+```
+repositories {
+  include(implementation("com.github.diamonddevv:simple-trims:${project.simple_trims_version}"));
+}
+```
+### In `gradle.properties`
+```
+simple_trims_version=<Insert version you wish to use here!>
+```
+
+---
+
 ## **This is a work in Progress!**
 _Here be dragons_
 - There are a parts of this mod incomplete:
@@ -27,5 +52,7 @@ _Here be dragons_
 - Once the system is functional, I will be creating a wiki on how to use this system.
 - Vanilla Packs for armor trims _should_ still work.
 
-  # Credits
-  - [Benjamin Norton](https://github.com/Benjamin-Norton) for their mod All the Trims, of which this is heavily inspired and referenced from.
+---
+
+# Credits
+- [Benjamin Norton](https://github.com/Benjamin-Norton) for their mod All the Trims, of which this is heavily inspired and referenced from.

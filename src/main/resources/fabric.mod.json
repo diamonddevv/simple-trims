@@ -29,6 +29,13 @@
 	"mixins": [
 		"simpletrims.mixins.json"
 	],
+
+	"custom": {
+		"modmenu": {
+			"badges": [ "library" ]
+		}
+	},
+
 	"accessWidener": "simpletrims.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.14.21",
