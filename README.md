@@ -25,7 +25,7 @@ repositories {
 #### `dependencies` block
 ```
 repositories {
-  include(implementation("com.github.diamonddevv:simple-trims:${project.simple_trims_version}"));
+  include(modImplementation("com.github.diamonddevv:simple-trims:${project.simple_trims_version}"));
 }
 ```
 ### In `gradle.properties`
