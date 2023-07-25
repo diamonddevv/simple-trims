@@ -13,6 +13,7 @@ public class SendQuietReload {
 
     public static void registerReceiver() {
         ClientPlayNetworking.registerGlobalReceiver(SEND_QUIET_RELOAD, (client, handler, buf, responseSender) -> {
+            SimpleTrims.LOGGER.info("Received request to quietly reload resources from server");
             quietlyReload(client);
         });
     }

@@ -14,6 +14,8 @@ may appear very similar, as the base concept of what All the Trims does is simil
 _Here be dragons_
 - There are a parts of this mod incomplete:
   - Item Model Trim Tinting 
+    - I can't figure out how to make this dynamic. If anyone knows how to add a texture to a BakedModel or something, _please_ open a pull request.
+    - For now, items using simple trim materials are displayed in inventories as not having a trim at all. The tooltip remains, however.
   - Simple Armor Trim Templates
 
 ### Features:
@@ -23,7 +25,7 @@ _Here be dragons_
 
 #### For those who wish to create custom trims using this mod:
 - Once the system is functional, I will be creating a wiki on how to use this system.
-- Vanilla Packs for armor trims _should_ still work. I plan to write this system to work in parallel to the vanilla one.
+- Vanilla Packs for armor trims _should_ still work.
 
   # Credits
-  - [Benjamin Norton](https://github.com/Benjamin-Norton) for the original project, All the Trims, of which this is heavily inspired and referenced from.
+  - [Benjamin Norton](https://github.com/Benjamin-Norton) for their mod All the Trims, of which this is heavily inspired and referenced from.

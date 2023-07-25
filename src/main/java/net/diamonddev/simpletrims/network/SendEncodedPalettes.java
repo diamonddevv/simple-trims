@@ -73,7 +73,7 @@ public class SendEncodedPalettes {
             SimpleTrims.LOGGER.info("Received a packet containing {} Encoded Palettes from the server", palettes.length);
 
             for (var palette : palettes) {
-                Identifier id = SimpleTrimsDataLoader.convertEncodedPaletteLocToPalettedPermutationIdenfier(palette.loc);
+                Identifier id = SimpleTrimsDataLoader.convertEncodedPaletteLocToPalettedPermutationIdentifier(palette.loc);
                 SimpleTrimsClient.NETWORKED_PALETTES.put(id, palette);
             }
         });

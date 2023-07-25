@@ -23,7 +23,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
 
     public static final String ENCODED_PALETTE_CONTAIN_STRING = "simpletrims_encoded_palette";
     public static final String NOT_A_TRANSLATION_KEY_LOL = "yeahBroThisIsntATranslationKey";
-    public static final String REFERABLE_KEY_REGEX_PATTERN = "^[A-Za-z0-9]+\\.[A-Za-z0-9]+\\.simpletrims\\.referable\\.material$";
+    public static final String REFERABLE_KEY_REGEX_PATTERN = "^[A-Za-z0-9]+\\.[A-Za-z0-9_-]+\\.simpletrims\\.referable\\.material$";
 
     private static final String MATERIAL_PALETTE_FILEPATH = "encodable_palettes";
     private static final String MATERIAL_FILEPATH = "simple_trim_material";
@@ -63,7 +63,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
         }
 
         @SerializedName(KEY_ENCODED_PALETTE)
-        public boolean encodedPalette = false;
+        public boolean encodedPalette = true;
 
         @SerializedName(KEY_ASSET_NAME)
         public String assetName = null;
@@ -127,10 +127,6 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             return translationHash;
         }
 
-        public String getTranslation(String langcode) {
-            return getTranslationHashmap().containsKey(langcode) ? getTranslationHashmap().get(langcode) : getTranslationHashmap().containsKey(Language.DEFAULT_LANGUAGE) ? getTranslationHashmap().get(Language.DEFAULT_LANGUAGE) : getReferrableTranslationKey();
-        }
-
         public String getNamespace() {
             return filepath.getNamespace();
         }
@@ -138,6 +134,10 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             if (bean.encodedPalette) {
                 return new Identifier(filepath.getNamespace(), ENCODED_PALETTE_CONTAIN_STRING + "/" + getNamespace() + "/" + getAssetName());
             } else return new Identifier(filepath.getNamespace(), "trims/color_palettes/" + getAssetName());
+        }
+
+        public boolean usingTranslationMap() {
+            return getDescTranslationKey().equals(NOT_A_TRANSLATION_KEY_LOL);
         }
     }
 
@@ -192,7 +192,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
         return split[split.length-1].split("\\.")[0]; // isolates the filename ("namespace:path/to/file.json" -> "file")
     }
 
-    public static Identifier convertEncodedPaletteLocToPalettedPermutationIdenfier(Identifier loc) {
+    public static Identifier convertEncodedPaletteLocToPalettedPermutationIdentifier(Identifier loc) {
         return new Identifier(loc.getNamespace(), ENCODED_PALETTE_CONTAIN_STRING + "/" + loc.getNamespace() + "/" + isolateFileName(loc));
     }
 }

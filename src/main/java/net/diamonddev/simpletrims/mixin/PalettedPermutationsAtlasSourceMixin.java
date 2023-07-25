@@ -35,8 +35,8 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
         if (paletteKey.equals(TRIM_MATERIAL_PALETTE_KEY)) {
             HashMap<String, Identifier> mutablePermutations = new HashMap<>(permutations);
 
-            for (var bean : SimpleTrimsDataLoader.SIMPLE_TRIM_MATERIALS) {
-                mutablePermutations.put(bean.getAssetName(), bean.getPathToPalette());
+            for (var entry : SimpleTrimsClient.NETWORKED_ASSETNAME_TO_PATH_HASH.entrySet()) {
+                mutablePermutations.put(entry.getKey(), new Identifier(entry.getValue()));
             }
 
             this.permutations = Collections.unmodifiableMap(mutablePermutations);
@@ -45,7 +45,9 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
 
     @Inject(method = "method_48486", at = @At("HEAD"), cancellable = true)
     private static void simpletrims$overrideLoadingLocationForEncodedPaletteResources(ResourceManager resourceManager, Identifier identifier, CallbackInfoReturnable<int[]> cir) {
+
         if (identifier.getPath().contains(SimpleTrimsDataLoader.ENCODED_PALETTE_CONTAIN_STRING)) {
+
             PaletteEncoderDecoder.EncodedPalette palette = SimpleTrimsClient.NETWORKED_PALETTES.get(identifier);
             try (NativeImage image = PaletteEncoderDecoder.openDecode(palette)) {
                 int[] colors = image.copyPixelsRgba();
