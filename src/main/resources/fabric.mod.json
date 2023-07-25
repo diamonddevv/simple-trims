@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "simpletrims",
 	"version": "${version}",
-	"name": "SimpleTrims",
+	"name": "Simple Trims",
 	"description": "Simplifying the process of adding new trims and materials.",
 	"authors": [
 		"DiamondDev",
@@ -21,9 +21,6 @@
 		],
 		"client": [
 			"net.diamonddev.simpletrims.SimpleTrimsClient"
-		],
-		"preLaunch": [
-			"net.diamonddev.simpletrims.PreLaunch"
 		]
 	},
 	"mixins": [
