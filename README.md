@@ -56,3 +56,4 @@ _Here be dragons_
 
 # Credits
 - [Benjamin Norton](https://github.com/Benjamin-Norton) for their mod All the Trims, of which this is heavily inspired and referenced from.
+- [ManuelXXVI](https://github.com/ManuelXXVI) for their Emissive Trim Shader, of which they kindly let me implement into this mod.

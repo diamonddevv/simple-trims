@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Language;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
@@ -16,6 +15,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
+import java.util.function.Function;
 
 import static net.diamonddev.simpletrims.data.SimpleTrimsDataLoader.MaterialKeys.*;
 
@@ -33,13 +34,18 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
         static final String
                 KEY_ENCODED_PALETTE = "encoded_palette",
                 KEY_ASSET_NAME = "asset_name",
+                KEY_INGREDIENT = "ingredient",
                 KEY_DESC = "description",
+                KEY_PROPERTIES = "properties",
+
                 KEY_DESC_COLOR = "color",
                 KEY_DESC_TRANSLATIONKEY = "translate",
-                KEY_TRANSLATIONS = "translations",
+                KEY_DESC_TRANSLATIONS = "translations",
+
+                KEY_PROPS_EMISSIVE = "emissive",
+
                 KEY_TRANSLATIONS_LANG = "lang",
-                KEY_TRANSLATIONS_STRING = "string",
-                KEY_INGREDIENT = "ingredient";
+                KEY_TRANSLATIONS_STRING = "string";
     }
 
     public static class MaterialBean {
@@ -50,7 +56,6 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             @SerializedName(KEY_TRANSLATIONS_STRING)
             public String translation;
         }
-
         public static class DesciptionBean {
             @SerializedName(KEY_DESC_COLOR)
             public String matColorHexcode;
@@ -58,8 +63,12 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             @SerializedName(KEY_DESC_TRANSLATIONKEY)
             public String matNameTranslationKey = NOT_A_TRANSLATION_KEY_LOL;
 
-            @SerializedName(KEY_TRANSLATIONS)
+            @SerializedName(KEY_DESC_TRANSLATIONS)
             public ArrayList<LangBean> translations;
+        }
+        public static class PropsBean {
+            @SerializedName(KEY_PROPS_EMISSIVE)
+            public boolean emissive = false;
         }
 
         @SerializedName(KEY_ENCODED_PALETTE)
@@ -71,10 +80,13 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
         @SerializedName(KEY_DESC)
         public DesciptionBean desc;
 
+        @SerializedName(KEY_PROPERTIES)
+        public PropsBean properties = null;
+
         @SerializedName(KEY_INGREDIENT)
         public String ingredient;
-
     }
+
     public static class MaterialBeanWrapper {
         private final MaterialBean bean;
         private final Identifier filepath;
@@ -91,7 +103,6 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             }
             return ingredient;
         }
-
         public String getIngredientAsId() {
             return bean.ingredient;
         }
@@ -107,7 +118,6 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
         public String getDescTranslationKey() {
             return bean.desc.matNameTranslationKey;
         }
-
         public String getReferrableTranslationKey() {
             return String.format("%s.%s.simpletrims.referable.material", getNamespace(), getAssetName());
         }
@@ -126,6 +136,9 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             }
             return translationHash;
         }
+        public boolean usingTranslationMap() {
+            return getDescTranslationKey().equals(NOT_A_TRANSLATION_KEY_LOL);
+        }
 
         public String getNamespace() {
             return filepath.getNamespace();
@@ -136,8 +149,10 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             } else return new Identifier(filepath.getNamespace(), "trims/color_palettes/" + getAssetName());
         }
 
-        public boolean usingTranslationMap() {
-            return getDescTranslationKey().equals(NOT_A_TRANSLATION_KEY_LOL);
+        public boolean shouldBeEmissive() {
+            if (bean.properties != null) {
+                return bean.properties.emissive;
+            } else return false;
         }
     }
 
@@ -178,13 +193,23 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             if (manager.getResource(id).isPresent()) {
                 try (InputStream stream = manager.getResource(id).get().getInputStream()) {
 
-                    ENCODED_PALETTES.add(PaletteEncoderDecoder.encode(id, stream));
+                    ENCODED_PALETTES.add(PaletteEncoderDecoder.encode(id, stream,
+                            getBeanWrapperFromIdAndIfPresent(id.getNamespace(), isolateFileName(id), MaterialBeanWrapper::shouldBeEmissive, false)));
 
                 } catch (Exception e) {
                     SimpleTrims.LOGGER.error("Error occurred reading palette image at id [{}] - {}", id.toString(), e);
                 }
             }
         }
+    }
+
+    public static <T> T getBeanWrapperFromIdAndIfPresent(String namespace, String assetName, Function<MaterialBeanWrapper, T> function, T notPresent) {
+        for (var bean : SIMPLE_TRIM_MATERIALS) {
+            if (bean.getNamespace().equals(namespace) && bean.getAssetName().equals(assetName)) {
+                return function.apply(bean);
+            }
+        }
+        return notPresent;
     }
 
     public static String isolateFileName(Identifier resId) {

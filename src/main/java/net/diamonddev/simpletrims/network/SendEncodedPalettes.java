@@ -56,12 +56,16 @@ public class SendEncodedPalettes {
     private static void writeSingle(PaletteEncoderDecoder.EncodedPalette palette, PacketByteBuf buf) {
         buf.writeIdentifier(palette.loc);
         buf.writeByteArray(palette.bytes);
+
+        buf.writeBoolean(palette.emissive);
     }
     private static PaletteEncoderDecoder.EncodedPalette readSingle(PacketByteBuf buf) {
         PaletteEncoderDecoder.EncodedPalette data = new PaletteEncoderDecoder.EncodedPalette();
 
         data.loc = buf.readIdentifier();
         data.bytes = buf.readByteArray();
+
+        data.emissive = buf.readBoolean();
 
         return data;
     }

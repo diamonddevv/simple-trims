@@ -5,8 +5,7 @@
 	"name": "Simple Trims",
 	"description": "Simplifying the process of adding new trims and materials.",
 	"authors": [
-		"DiamondDev",
-		"Bawnorton (Author of AllTheTrims, of which some code was reused from)"
+		"DiamondDev"
 	],
 	"contact": {
 		"homepage": "https://diamonddevv.github.io/",
