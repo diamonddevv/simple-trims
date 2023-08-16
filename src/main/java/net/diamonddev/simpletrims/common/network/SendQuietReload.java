@@ -1,7 +1,7 @@
-package net.diamonddev.simpletrims.network;
+package net.diamonddev.simpletrims.common.network;
 
-import net.diamonddev.simpletrims.SimpleTrims;
-import net.diamonddev.simpletrims.SimpleTrimsClient;
+import net.diamonddev.simpletrims.common.SimpleTrims;
+import net.diamonddev.simpletrims.client.SimpleTrimsClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;

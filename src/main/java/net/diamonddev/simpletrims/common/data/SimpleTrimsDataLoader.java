@@ -1,8 +1,8 @@
-package net.diamonddev.simpletrims.data;
+package net.diamonddev.simpletrims.common.data;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import net.diamonddev.simpletrims.SimpleTrims;
+import net.diamonddev.simpletrims.common.SimpleTrims;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -15,10 +15,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.function.Function;
 
-import static net.diamonddev.simpletrims.data.SimpleTrimsDataLoader.MaterialKeys.*;
+import static net.diamonddev.simpletrims.common.data.SimpleTrimsDataLoader.MaterialKeys.*;
 
 public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadListener {
 
@@ -43,6 +42,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
                 KEY_DESC_TRANSLATIONS = "translations",
 
                 KEY_PROPS_EMISSIVE = "emissive",
+                KEY_PROPS_POWERS = "wearing_power",
 
                 KEY_TRANSLATIONS_LANG = "lang",
                 KEY_TRANSLATIONS_STRING = "string";
@@ -69,6 +69,9 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
         public static class PropsBean {
             @SerializedName(KEY_PROPS_EMISSIVE)
             public boolean emissive = false;
+
+            @SerializedName(KEY_PROPS_POWERS)
+            public String apoliPower;
         }
 
         @SerializedName(KEY_ENCODED_PALETTE)
@@ -88,6 +91,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
     }
 
     public static class MaterialBeanWrapper {
+
         private final MaterialBean bean;
         private final Identifier filepath;
 
@@ -154,10 +158,21 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
                 return bean.properties.emissive;
             } else return false;
         }
+        public String getPower() {
+            return bean.properties.apoliPower;
+        }
     }
 
     public static ArrayList<MaterialBeanWrapper> SIMPLE_TRIM_MATERIALS = new ArrayList<>();
     public static ArrayList<PaletteEncoderDecoder.EncodedPalette> ENCODED_PALETTES = new ArrayList<>();
+
+    public static MaterialBeanWrapper lookupWrapper(Identifier id) {
+        for (MaterialBeanWrapper mbw : SIMPLE_TRIM_MATERIALS) {
+            if (id.getNamespace().equals(mbw.getNamespace()) && id.getPath().equals(mbw.getAssetName())) {
+                return mbw;
+            }
+        } return null;
+    }
 
     @Override
     public Identifier getFabricId() {
@@ -171,6 +186,8 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
         // Clear Cache
         SIMPLE_TRIM_MATERIALS.clear();
         ENCODED_PALETTES.clear();
+
+        TrimApoliPowerUtil.clearMemo();
 
         // Get Streams and consume beans
 

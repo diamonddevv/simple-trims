@@ -1,9 +1,9 @@
 package net.diamonddev.simpletrims.mixin;
 
-import net.diamonddev.simpletrims.SimpleTrims;
-import net.diamonddev.simpletrims.SimpleTrimsClient;
-import net.diamonddev.simpletrims.data.PaletteEncoderDecoder;
-import net.diamonddev.simpletrims.data.SimpleTrimsDataLoader;
+import net.diamonddev.simpletrims.common.SimpleTrims;
+import net.diamonddev.simpletrims.client.SimpleTrimsClient;
+import net.diamonddev.simpletrims.common.data.PaletteEncoderDecoder;
+import net.diamonddev.simpletrims.common.data.SimpleTrimsDataLoader;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.texture.NativeImage;

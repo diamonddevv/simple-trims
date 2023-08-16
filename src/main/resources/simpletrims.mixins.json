@@ -5,6 +5,7 @@
   "mixins": [
     "ArmorTrimMaterialMixin",
     "DataPackContentsMixin",
+    "LivingEntityMixin",
     "PlayerManagerMixin",
     "RegistryLoaderMixin"
   ],

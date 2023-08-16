@@ -1,10 +1,10 @@
-package net.diamonddev.simpletrims;
+package net.diamonddev.simpletrims.client;
 
-import net.diamonddev.simpletrims.data.PaletteEncoderDecoder;
-import net.diamonddev.simpletrims.network.SendAssetNamesToPalettePaths;
-import net.diamonddev.simpletrims.network.SendEncodedPalettes;
-import net.diamonddev.simpletrims.network.SendQuietReload;
-import net.diamonddev.simpletrims.network.SendTranslations;
+import net.diamonddev.simpletrims.common.data.PaletteEncoderDecoder;
+import net.diamonddev.simpletrims.common.network.SendAssetNamesToPalettePaths;
+import net.diamonddev.simpletrims.common.network.SendEncodedPalettes;
+import net.diamonddev.simpletrims.common.network.SendQuietReload;
+import net.diamonddev.simpletrims.common.network.SendTranslations;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

@@ -1,4 +1,4 @@
-package net.diamonddev.simpletrims.data;
+package net.diamonddev.simpletrims.common.data;
 
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.util.Identifier;

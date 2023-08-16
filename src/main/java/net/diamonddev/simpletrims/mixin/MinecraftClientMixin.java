@@ -1,7 +1,7 @@
 package net.diamonddev.simpletrims.mixin;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import net.diamonddev.simpletrims.SimpleTrimsClient;
+import net.diamonddev.simpletrims.client.SimpleTrimsClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;

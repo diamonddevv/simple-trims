@@ -18,7 +18,20 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 
-	maven { url 'https://jitpack.io' }
+	maven {
+		name = 'Ladysnake Mods'
+		url = 'https://maven.ladysnake.org/releases'
+	}
+	maven {
+		url "https://jitpack.io"
+	}
+	maven {
+		url "https://maven.shedaniel.me/"
+	}
+	maven {
+		url "https://maven.terraformersmc.com/"
+	}
+	// idk i just copied what origins needs and got rid of stuff that didnt appear
 }
 
 loom {
@@ -34,6 +47,8 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	// apoli, mixin extras
+	include(modApi("com.github.apace100:apoli:${project.apoli_version}"))
 	include(implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixinextrasver}")))
 }
 

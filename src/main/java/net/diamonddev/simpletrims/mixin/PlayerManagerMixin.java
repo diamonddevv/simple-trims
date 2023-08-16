@@ -1,12 +1,12 @@
 package net.diamonddev.simpletrims.mixin;
 
-import net.diamonddev.simpletrims.SimpleTrims;
-import net.diamonddev.simpletrims.data.PaletteEncoderDecoder;
-import net.diamonddev.simpletrims.data.SimpleTrimsDataLoader;
-import net.diamonddev.simpletrims.network.SendAssetNamesToPalettePaths;
-import net.diamonddev.simpletrims.network.SendEncodedPalettes;
-import net.diamonddev.simpletrims.network.SendQuietReload;
-import net.diamonddev.simpletrims.network.SendTranslations;
+import net.diamonddev.simpletrims.common.SimpleTrims;
+import net.diamonddev.simpletrims.common.data.PaletteEncoderDecoder;
+import net.diamonddev.simpletrims.common.data.SimpleTrimsDataLoader;
+import net.diamonddev.simpletrims.common.network.SendAssetNamesToPalettePaths;
+import net.diamonddev.simpletrims.common.network.SendEncodedPalettes;
+import net.diamonddev.simpletrims.common.network.SendQuietReload;
+import net.diamonddev.simpletrims.common.network.SendTranslations;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.ClientConnection;

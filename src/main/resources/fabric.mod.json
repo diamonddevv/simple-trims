@@ -16,10 +16,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.diamonddev.simpletrims.SimpleTrims"
+          "net.diamonddev.simpletrims.common.SimpleTrims"
 		],
 		"client": [
-			"net.diamonddev.simpletrims.SimpleTrimsClient"
+			"net.diamonddev.simpletrims.client.SimpleTrimsClient"
 		]
 	},
 	"mixins": [
