@@ -27,7 +27,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
 
     private static final String MATERIAL_PALETTE_FILEPATH = "encodable_palettes";
     private static final String MATERIAL_FILEPATH = "simple_trim_material";
-    private static final String PATTERN_FILEPATH = "simple_trim_patten";
+    private static final String PATTERN_FILEPATH = "simple_trim_pattern";
 
     static class MaterialKeys {
         static final String
@@ -56,7 +56,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             @SerializedName(KEY_TRANSLATIONS_STRING)
             public String translation;
         }
-        public static class DesciptionBean {
+        public static class DescriptionBean {
             @SerializedName(KEY_DESC_COLOR)
             public String matColorHexcode;
 
@@ -81,7 +81,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
         public String assetName = null;
 
         @SerializedName(KEY_DESC)
-        public DesciptionBean desc;
+        public DescriptionBean desc;
 
         @SerializedName(KEY_PROPERTIES)
         public PropsBean properties = null;
@@ -160,6 +160,10 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
         }
         public String getPower() {
             return bean.properties.apoliPower;
+        }
+
+        public boolean usingEncodedPalette() {
+            return bean.encodedPalette;
         }
     }
 

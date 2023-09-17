@@ -56,8 +56,8 @@ public class TrimApoliPowerUtil {
         if (stack.getOrCreateNbt().contains(ArmorTrim.NBT_KEY)) {
             NbtCompound trim = stack.getSubNbt(ArmorTrim.NBT_KEY);
             if (trim != null) {
-                if (trim.contains("Material")) {
-                    Identifier material = new Identifier(trim.getString("Material"));
+                if (trim.contains("material")) {
+                    Identifier material = new Identifier(trim.getString("material"));
 
                     String powerId = null;
                     if (MEMOIZED_POWERS.containsKey(material)) {
@@ -66,7 +66,9 @@ public class TrimApoliPowerUtil {
                         var mbw = SimpleTrimsDataLoader.lookupWrapper(material);
                         if (mbw != null) {
                             powerId = mbw.getPower();
+                            MEMOIZED_POWERS.put(material, powerId); // memoize
                         }
+
                     }
 
                     if (powerId != null) {

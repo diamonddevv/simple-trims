@@ -1,11 +1,13 @@
 package net.diamonddev.simpletrims.common;
 
-import net.diamonddev.simpletrims.common.command.CmdInit;
 import net.diamonddev.simpletrims.common.data.SimpleTrimsDataLoader;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
+import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.GameRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,23 +27,27 @@ public class SimpleTrims implements ModInitializer {
 			"don't try to send textures over packets worst mistake of my life",
 			"this solves a very specific problem no one probably ever had",
 			"what the hell is an encoded palette",
-			"niinku viulunkieli ?!",
+			"niinku viulunkieli !?",
 			"now with apoli!",
 			"trims but simpler",
 			"simple the trim",
 			"you're welcome, i fixed the extra space",
-			//"try /trim!",
 			"also try terraria!",
 			"so i added some more of these",
 			"try adding an emissive trim!",
-			"@diamonddevv (discord, twitter) was here"
+			"@diamonddevv (discord, twitter) was here",
+			"i paid for the whole two megabytes im gonna use the whole two megabytes",
+			"can we go much higher (yes, we can)"
 	};
 
+	public GameRules.Key<GameRules.BooleanRule> SHOULD_PROVIDE_TRIM_POWERS;
 
 	@Override
 	public void onInitialize() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(TRIM_DATA);
-		// CmdInit.register(); // todo: fix ig lol
+
+		SHOULD_PROVIDE_TRIM_POWERS = // gamerule
+				GameRuleRegistry.register("shouldSimpleTrimsProvideApoliPowers", GameRules.Category.PLAYER, GameRuleFactory.createBooleanRule(true));
 
 		LOGGER.info("{} (initialized simpletrims)", getGoofyMessage());
 	}

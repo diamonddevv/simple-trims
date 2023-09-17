@@ -27,6 +27,8 @@ public class PlayerManagerMixin {
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
     private void simpletrims$onPlayerConnectToServer(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
         String playername = player.getGameProfile().getName();
+        boolean shouldQuietReload = false;
+
 
         // Asset Names to Palette Paths
         HashMap<String, String> assetsToPaths = new HashMap<>();
@@ -47,6 +49,12 @@ public class PlayerManagerMixin {
         HashMap<Identifier, HashMap<String, String>> translations = new HashMap<>();
         int translationCount = 0, materialCount = 0;
         for (var bean : SimpleTrimsDataLoader.SIMPLE_TRIM_MATERIALS) {
+            if (!shouldQuietReload) {
+                if (bean.usingEncodedPalette()) {
+                    shouldQuietReload = true;
+                }
+            }
+
             if (bean.usingTranslationMap()) {
                 var hash = bean.getTranslationHashmap();
                 var id = new Identifier(bean.getNamespace(), bean.getAssetName());
@@ -59,8 +67,10 @@ public class PlayerManagerMixin {
         ServerPlayNetworking.send(player, SendTranslations.SEND_TRANSLATIONS, SendTranslations.write(translations));
 
         // Quiet Reload Request
-        SimpleTrims.LOGGER.info("Telling user {}'s client to quietly reload..", playername);
-        ServerPlayNetworking.send(player, SendQuietReload.SEND_QUIET_RELOAD, PacketByteBufs.empty());
+        if (shouldQuietReload) {
+            SimpleTrims.LOGGER.info("Telling user {}'s client to quietly reload..", playername);
+            ServerPlayNetworking.send(player, SendQuietReload.SEND_QUIET_RELOAD, PacketByteBufs.empty());
+        }
 
 
         // finish

@@ -18,6 +18,6 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void simpletrims$applyTrimPowers(CallbackInfo ci) {
-        TrimApoliPowerUtil.updateAllTrimPowerApplications((LivingEntity)(Object)this);
+        //TrimApoliPowerUtil.updateAllTrimPowerApplications((LivingEntity)(Object)this); //todo
     }
 }
