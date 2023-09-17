@@ -23,7 +23,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
 
     public static final String ENCODED_PALETTE_CONTAIN_STRING = "simpletrims_encoded_palette";
     public static final String NOT_A_TRANSLATION_KEY_LOL = "yeahBroThisIsntATranslationKey";
-    public static final String REFERABLE_KEY_REGEX_PATTERN = "^[A-Za-z0-9]+\\.[A-Za-z0-9_-]+\\.simpletrims\\.referable\\.material$";
+    public static final String REFERABLE_KEY_REGEX_PATTERN = "^[A-Za-z0-9]+\\.[A-Za-z0-9_-]+\\.simpletrims\\.referable\\.material\\.trim$";
 
     private static final String MATERIAL_PALETTE_FILEPATH = "encodable_palettes";
     private static final String MATERIAL_FILEPATH = "simple_trim_material";
@@ -123,7 +123,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             return bean.desc.matNameTranslationKey;
         }
         public String getReferrableTranslationKey() {
-            return String.format("%s.%s.simpletrims.referable.material", getNamespace(), getAssetName());
+            return String.format("%s.%s.simpletrims.referable.material.trim", getNamespace(), getAssetName());
         }
         public String getDescColorCodeAsHexString() {
             return bean.desc.matColorHexcode;

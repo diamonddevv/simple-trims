@@ -1,5 +1,6 @@
 package net.diamonddev.simpletrims.mixin;
 
+import net.diamonddev.simpletrims.common.SimpleTrims;
 import net.diamonddev.simpletrims.common.data.TrimApoliPowerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -18,6 +19,8 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void simpletrims$applyTrimPowers(CallbackInfo ci) {
-        //TrimApoliPowerUtil.updateAllTrimPowerApplications((LivingEntity)(Object)this); //todo
+        //if (getWorld().getGameRules().getBoolean(SimpleTrims.SHOULD_PROVIDE_TRIM_POWERS)) {
+        //    TrimApoliPowerUtil.updateAllTrimPowerApplications((LivingEntity)(Object)this); //todo
+        //}
     }
 }

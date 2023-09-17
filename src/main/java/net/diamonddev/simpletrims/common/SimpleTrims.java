@@ -5,6 +5,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.GameRules;
@@ -40,14 +42,22 @@ public class SimpleTrims implements ModInitializer {
 			"can we go much higher (yes, we can)"
 	};
 
-	public GameRules.Key<GameRules.BooleanRule> SHOULD_PROVIDE_TRIM_POWERS;
+	public static GameRules.Key<GameRules.BooleanRule> SHOULD_PROVIDE_TRIM_POWERS;
+
+	// mods
+	public static boolean hasBetterTrimTooltips;
 
 	@Override
 	public void onInitialize() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(TRIM_DATA);
 
-		SHOULD_PROVIDE_TRIM_POWERS = // gamerule
-				GameRuleRegistry.register("shouldSimpleTrimsProvideApoliPowers", GameRules.Category.PLAYER, GameRuleFactory.createBooleanRule(true));
+		//SHOULD_PROVIDE_TRIM_POWERS = // gamerule
+		//		GameRuleRegistry.register("shouldSimpleTrimsProvideApoliPowers", GameRules.Category.PLAYER, GameRuleFactory.createBooleanRule(true));
+
+		hasBetterTrimTooltips = FabricLoader.getInstance().isModLoaded("better-trim-tooltips");
+		// i think the compat for this is on bettertrimtooltips side, will pr better trim tooltips
+
+
 
 		LOGGER.info("{} (initialized simpletrims)", getGoofyMessage());
 	}
