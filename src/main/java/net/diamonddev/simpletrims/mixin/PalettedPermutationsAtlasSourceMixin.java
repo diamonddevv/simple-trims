@@ -43,7 +43,7 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
         }
     }
 
-    @Inject(method = "method_48486", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "open", at = @At("HEAD"), cancellable = true)
     private static void simpletrims$overrideLoadingLocationForEncodedPaletteResources(ResourceManager resourceManager, Identifier identifier, CallbackInfoReturnable<int[]> cir) {
 
         if (identifier.getPath().contains(SimpleTrimsDataLoader.ENCODED_PALETTE_CONTAIN_STRING)) {

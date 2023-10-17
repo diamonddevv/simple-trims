@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.PlayerManager;
+import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 public class PlayerManagerMixin {
 
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
-    private void simpletrims$onPlayerConnectToServer(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
+    private void simpletrims$onPlayerConnectToServer(ClientConnection connection, ServerPlayerEntity player, ConnectedClientData clientData, CallbackInfo ci) {
         String playername = player.getGameProfile().getName();
         boolean shouldQuietReload = false;
 

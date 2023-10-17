@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
     @WrapWithCondition(
-            method = "reloadResources(Z)Ljava/util/concurrent/CompletableFuture;",
+            method = "reloadResources(ZLnet/minecraft/client/MinecraftClient$LoadingContext;)Ljava/util/concurrent/CompletableFuture;",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;setOverlay(Lnet/minecraft/client/gui/screen/Overlay;)V")
     )
     private boolean simpletrims$dontDisplayReloadOverlayForQuietReload(MinecraftClient instance, Overlay overlay) {
