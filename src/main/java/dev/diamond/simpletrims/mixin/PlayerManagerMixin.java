@@ -1,18 +1,17 @@
-package net.diamonddev.simpletrims.mixin;
+package dev.diamond.simpletrims.mixin;
 
-import net.diamonddev.simpletrims.common.SimpleTrims;
-import net.diamonddev.simpletrims.common.data.PaletteEncoderDecoder;
-import net.diamonddev.simpletrims.common.data.SimpleTrimsDataLoader;
-import net.diamonddev.simpletrims.common.network.SendAssetNamesToPalettePaths;
-import net.diamonddev.simpletrims.common.network.SendEncodedPalettes;
-import net.diamonddev.simpletrims.common.network.SendQuietReload;
-import net.diamonddev.simpletrims.common.network.SendTranslations;
+import dev.diamond.simpletrims.common.SimpleTrims;
+import dev.diamond.simpletrims.common.data.PaletteEncoderDecoder;
+import dev.diamond.simpletrims.common.data.SimpleTrimsDataLoader;
+import dev.diamond.simpletrims.common.network.SendAssetNamesToPalettePaths;
+import dev.diamond.simpletrims.common.network.SendEncodedPalettes;
+import dev.diamond.simpletrims.common.network.SendQuietReload;
+import dev.diamond.simpletrims.common.network.SendTranslations;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,7 +25,7 @@ import java.util.HashMap;
 public class PlayerManagerMixin {
 
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
-    private void simpletrims$onPlayerConnectToServer(ClientConnection connection, ServerPlayerEntity player, ConnectedClientData clientData, CallbackInfo ci) {
+    private void simpletrims$onPlayerConnectToServer(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
         String playername = player.getGameProfile().getName();
         boolean shouldQuietReload = false;
 

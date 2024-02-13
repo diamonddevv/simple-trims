@@ -60,7 +60,7 @@ repositories {
 
 
 loom {
-	//accessWidenerPath = file("src/main/resources/simpletrims.accesswidener")
+	accessWidenerPath = file("src/main/resources/simpletrims.accesswidener")
 }
 
 dependencies {
@@ -75,6 +75,9 @@ dependencies {
 	// apoli, mixin extras
 	include(modApi("com.github.apace100:apoli:${project.apoli_version}"))
 	include(implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixinextrasver}")))
+
+	// libGenetics
+	include modImplementation ("com.github.diamonddevv:libgenetics:${project.libgenetics}")
 }
 
 processResources {

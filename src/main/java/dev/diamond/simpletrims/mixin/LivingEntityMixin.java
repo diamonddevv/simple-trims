@@ -1,7 +1,5 @@
-package net.diamonddev.simpletrims.mixin;
+package dev.diamond.simpletrims.mixin;
 
-import net.diamonddev.simpletrims.common.SimpleTrims;
-import net.diamonddev.simpletrims.common.data.TrimApoliPowerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

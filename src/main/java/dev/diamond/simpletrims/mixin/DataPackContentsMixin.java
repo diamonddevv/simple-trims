@@ -1,7 +1,7 @@
-package net.diamonddev.simpletrims.mixin;
+package dev.diamond.simpletrims.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.diamonddev.simpletrims.common.data.SimpleTrimsDataLoader;
+import dev.diamond.simpletrims.common.data.SimpleTrimsDataLoader;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;

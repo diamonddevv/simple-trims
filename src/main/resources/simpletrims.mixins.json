@@ -1,19 +1,19 @@
 {
   "required": true,
-  "package": "net.diamonddev.simpletrims.mixin",
+  "package": "dev.diamond.simpletrims.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ArmorTrimMaterialMixin",
-    "DataPackContentsMixin",
-    "LivingEntityMixin",
-    "PlayerManagerMixin",
-    "RegistryLoaderMixin"
+      "ArmorTrimMaterialMixin",
+      "DataPackContentsMixin",
+      "LivingEntityMixin",
+      "PlayerManagerMixin",
+      "RegistryLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
-    "MinecraftClientMixin",
-    "PalettedPermutationsAtlasSourceMixin"
+      "MinecraftClientMixin",
+      "PalettedPermutationsAtlasSourceMixin"
   ]
 }

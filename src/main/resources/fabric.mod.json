@@ -16,10 +16,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-          "net.diamonddev.simpletrims.common.SimpleTrims"
+            "dev.diamond.simpletrims.common.SimpleTrims"
 		],
 		"client": [
-			"net.diamonddev.simpletrims.client.SimpleTrimsClient"
+            "dev.diamond.simpletrims.client.SimpleTrimsClient"
 		]
 	},
 	"mixins": [
@@ -32,10 +32,11 @@
 		}
 	},
 
+	"accessWidener": "simpletrims.accesswidener",
 
 	"depends": {
 		"fabricloader": ">=0.14.21",
-		"minecraft": "~1.20.1",
+		"minecraft": ">=1.20.1",
 		"java": ">=17",
 		"fabric-api": "*"
 	},

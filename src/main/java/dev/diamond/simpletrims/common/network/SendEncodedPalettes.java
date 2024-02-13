@@ -1,9 +1,9 @@
-package net.diamonddev.simpletrims.common.network;
+package dev.diamond.simpletrims.common.network;
 
-import net.diamonddev.simpletrims.common.SimpleTrims;
-import net.diamonddev.simpletrims.client.SimpleTrimsClient;
-import net.diamonddev.simpletrims.common.data.PaletteEncoderDecoder;
-import net.diamonddev.simpletrims.common.data.SimpleTrimsDataLoader;
+import dev.diamond.simpletrims.common.SimpleTrims;
+import dev.diamond.simpletrims.client.SimpleTrimsClient;
+import dev.diamond.simpletrims.common.data.PaletteEncoderDecoder;
+import dev.diamond.simpletrims.common.data.SimpleTrimsDataLoader;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.network.PacketByteBuf;

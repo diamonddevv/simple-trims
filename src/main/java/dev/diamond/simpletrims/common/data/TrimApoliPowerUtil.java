@@ -1,4 +1,4 @@
-package net.diamonddev.simpletrims.common.data;
+package dev.diamond.simpletrims.common.data;
 
 import io.github.apace100.apoli.component.PowerHolderComponent;
 import io.github.apace100.apoli.component.PowerHolderComponentImpl;

@@ -1,8 +1,8 @@
-package net.diamonddev.simpletrims.common.data;
+package dev.diamond.simpletrims.common.data;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import net.diamonddev.simpletrims.common.SimpleTrims;
+import dev.diamond.simpletrims.common.SimpleTrims;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
 
-import static net.diamonddev.simpletrims.common.data.SimpleTrimsDataLoader.MaterialKeys.*;
+import static dev.diamond.simpletrims.common.data.SimpleTrimsDataLoader.MaterialKeys.*;
 
 public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadListener {
 
@@ -70,8 +70,8 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             @SerializedName(KEY_PROPS_EMISSIVE)
             public boolean emissive = false;
 
-            @SerializedName(KEY_PROPS_POWERS)
-            public String apoliPower;
+            /*@SerializedName(KEY_PROPS_POWERS)
+            public String apoliPower;*/
         }
 
         @SerializedName(KEY_ENCODED_PALETTE)
@@ -159,7 +159,7 @@ public class SimpleTrimsDataLoader implements SimpleSynchronousResourceReloadLis
             } else return false;
         }
         public String getPower() {
-            return bean.properties.apoliPower;
+            return null; //bean.properties.apoliPower;
         }
 
         public boolean usingEncodedPalette() {

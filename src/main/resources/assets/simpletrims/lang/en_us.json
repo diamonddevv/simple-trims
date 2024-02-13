@@ -1,0 +1,4 @@
+{
+    "simpletrims.noQuietReloadMessage": "Client Config has Quiet Reloading disabled, however the server sent things to be reloaded. Please reload resources (F3+T) to see changes!",
+    "simpletrims.whyQuietReloadBad": "You can enable Quiet Reloading at the config (simple_trims_client.json), however this is currently not recommended as it can cause many mod conflicts."
+}

@@ -1,12 +1,9 @@
-package net.diamonddev.simpletrims.common;
+package dev.diamond.simpletrims.common;
 
-import net.diamonddev.simpletrims.common.data.SimpleTrimsDataLoader;
+import dev.diamond.simpletrims.common.data.SimpleTrimsDataLoader;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
-import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.GameRules;

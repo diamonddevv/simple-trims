@@ -1,8 +1,8 @@
-package net.diamonddev.simpletrims.mixin;
+package dev.diamond.simpletrims.mixin;
 
-import net.diamonddev.simpletrims.common.SimpleTrims;
-import net.diamonddev.simpletrims.client.SimpleTrimsClient;
-import net.diamonddev.simpletrims.common.data.SimpleTrimsDataLoader;
+import dev.diamond.simpletrims.common.SimpleTrims;
+import dev.diamond.simpletrims.client.SimpleTrimsClient;
+import dev.diamond.simpletrims.common.data.SimpleTrimsDataLoader;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
